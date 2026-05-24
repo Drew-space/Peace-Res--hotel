@@ -33,56 +33,8 @@ const Hero = () => {
 
 export default Hero;
 
-// function Navbar() {
-//   const navLinks = [
-//     "Home",
-//     "Our-models",
-//     "inventory",
-//     "Blog",
-//     "review",
-//     "event",
-//     "Contact",
-//   ];
-
-//   const [active, setActive] = useState("Home");
-
-//   return (
-//     <nav className="w-full">
-//       <div className="flex w-full items-center justify-center gap-8 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20">
-//         {navLinks.map((navs, index) => {
-//           const isActive = active === navs;
-
-//           return (
-//             <div
-//               key={index}
-//               onClick={() => setActive(navs)}
-//               className="flex items-center capitalize"
-//             >
-//               {isActive ? (
-//                 <Button>{navs}</Button>
-//               ) : (
-//                 <span className="text-white text-sm cursor-pointer hover:text-gray-300">
-//                   {navs}
-//                 </span>
-//               )}
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </nav>
-//   );
-// }
-
 function Navbar() {
-  const navLinks = [
-    "Home",
-    "Our-models",
-    "Inventory",
-    "Blog",
-    "Review",
-    "Event",
-    "Contact",
-  ];
+  const navLinks = ["Home", "About", "Our-Rooms", "FAQ"];
 
   return (
     <nav className="w-full absolute top-0 left-0 z-50">

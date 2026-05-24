@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
 
 const VideoSection = () => {
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -23,7 +23,6 @@ const VideoSection = () => {
   return (
     <section className="w-full py-20">
       <div className="relative w-full h-[500px] overflow-hidden">
-        {/* Video */}
         <video
           ref={videoRef}
           className="w-full h-full object-cover"
@@ -34,14 +33,12 @@ const VideoSection = () => {
           playsInline
         />
 
-        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/30" />
 
-        {/* Play/Pause Button */}
         <div className="absolute inset-0 flex items-center justify-center">
           <button
             onClick={toggleVideo}
-            className="h-14 w-14 rounded-full  ring-white ring-2 flex items-center justify-center transition hover:scale-105"
+            className="h-14 w-14 rounded-full ring-white ring-2 flex items-center justify-center transition hover:scale-105"
           >
             {isPlaying ? (
               <Pause size={30} className="text-white fill-white" />
