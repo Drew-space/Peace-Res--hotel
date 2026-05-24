@@ -41,12 +41,12 @@ const VideoSection = () => {
         <div className="absolute inset-0 flex items-center justify-center">
           <button
             onClick={toggleVideo}
-            className="h-24 w-24 rounded-full  ring-white ring-2 flex items-center justify-center transition hover:scale-105"
+            className="h-14 w-14 rounded-full  ring-white ring-2 flex items-center justify-center transition hover:scale-105"
           >
             {isPlaying ? (
-              <Pause size={40} className="text-white fill-white" />
+              <Pause size={30} className="text-white fill-white" />
             ) : (
-              <Play size={40} className="text-white fill-white ml-1" />
+              <Play size={30} className="text-white fill-white ml-1" />
             )}
           </button>
         </div>
