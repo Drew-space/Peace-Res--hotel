@@ -5,7 +5,7 @@ import { Separator } from "./ui/separator";
 
 const ExploreRooms = () => {
   return (
-    <section className="container mx-auto pb-10">
+    <section className="container mx-auto sm:px-6 lg:px-8 pb-10 ">
       <div className="flex flex-col justify-center items-center">
         <p>(ROOMS & SUITES) </p>
         <h1>Explore Room & Suites</h1>
@@ -41,9 +41,9 @@ const EsploreRoom = () => {
     },
   ];
   return (
-    <div className="grid grid-cols-1  md:grid-cols-2 gap-6">
+    <div className="grid px-4 grid-cols-1 md:grid-cols-2 gap-6 mt-4 w-full">
       {rooms.map((room, index) => (
-        <div key={index} className="w-[450px]">
+        <div key={index} className="w-full">
           {/* Image */}
           <div className="relative h-[300px] overflow-hidden rounded-xl">
             <Image
@@ -67,7 +67,7 @@ const EsploreRoom = () => {
           <div className="mt-4 flex items-center justify-between gap-4">
             {/* Room Name */}
             <div className="min-w-0">
-              <h1 className="text-2xl font-medium whitespace-nowrap">
+              <h1 className="md:text-2xl font-medium whitespace-nowrap">
                 {room.name}
               </h1>
             </div>

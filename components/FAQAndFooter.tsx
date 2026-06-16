@@ -115,7 +115,7 @@ export default function FAQAndFooter() {
                 <div key={index} className="border-b border-black/10 py-7">
                   <div className="flex justify-between gap-5">
                     <div className="flex-1">
-                      <h3 className="text-[1.5rem] md:text-[2rem] font-medium">
+                      <h3 className="text-[1.5rem] md:text-[2rem] leading-9 font-medium">
                         {faq.question}
                       </h3>
 

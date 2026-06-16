@@ -200,7 +200,7 @@ export function CarouselSize() {
                 </h1>
 
                 {/* DETAILS */}
-                <div className="flex flex-wrap gap-3 sm:gap-5 mt-3 md:mt-4 text-gray-500 text-sm sm:text-base">
+                <div className="flex flex-wrap font-inter gap-3 sm:gap-5 mt-3 md:mt-4 text-gray-500 text-sm sm:text-base">
                   <div className="flex items-center gap-2">
                     <Maximize size={16} />
                     <span>90 Sq Ft</span>
