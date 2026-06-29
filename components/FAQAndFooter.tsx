@@ -192,8 +192,8 @@ export default function FAQAndFooter() {
             <h3 className="text-[2rem] mb-5">Contact Us</h3>
 
             <div className="space-y-4">
-              <p>booking@livora.com</p>
-              <p>+331 5856 7960</p>
+              <p>booking@peaceresr.com</p>
+              <p>+234 567 890 </p>
               <p>42 avenue Hudson, Austria</p>
             </div>
 
@@ -209,7 +209,7 @@ export default function FAQAndFooter() {
 
         {/* BOTTOM */}
         <div className="border-t border-black/15 mt-20 pt-7 flex justify-between flex-col md:flex-row gap-5">
-          <p>© 2025 All Rights Reserved</p>
+          <p>© 2026 All Rights Reserved</p>
 
           <div className="flex gap-8">
             <p>Terms</p>
