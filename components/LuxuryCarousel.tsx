@@ -1,211 +1,193 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import { EmblaCarouselType } from "embla-carousel";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import Button from "./Button";
+import { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
-const slides = [
+const rooms = [
   {
+    id: 1,
+    word: "Indulge",
+    headline: "Luxury Suite",
+    description:
+      "Spacious elegance with premium finishes, a private lounge area, and floor-to-ceiling views that follow you from bed to bath.",
     image:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=2000&auto=format&fit=crop",
-    title: "Luxury Suite",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
   },
   {
+    id: 2,
+    word: "Elevate",
+    headline: "Modern Penthouse",
+    description:
+      "Sky-high living with an open-plan layout, designer kitchen, and a rooftop terrace made for sunset cocktails.",
     image:
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2000&auto=format&fit=crop",
-    title: "Modern Penthouse",
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop",
   },
   {
+    id: 3,
+    word: "Breathe",
+    headline: "Ocean View",
+    description:
+      "Wake up to the sound of waves. Panoramic sea views, soft linen, and a balcony that blurs the line between inside and out.",
     image:
-      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=2000&auto=format&fit=crop",
-    title: "Ocean View",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1200&auto=format&fit=crop",
   },
   {
+    id: 4,
+    word: "Dream",
+    headline: "Royal Deluxe",
+    description:
+      "The crown jewel. Handpicked antiques, a soaking tub, and service that anticipates what you need before you ask.",
     image:
-      "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2000&auto=format&fit=crop",
-    title: "Royal Deluxe",
+      "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1200&auto=format&fit=crop",
   },
 ];
 
-const TWEEN_FACTOR_BASE = 0.32;
+const DURATION = 5000;
 
-const numberWithinRange = (number: number, min: number, max: number): number =>
-  Math.min(Math.max(number, min), max);
+export default function ExpandingAccommodations() {
+  const [active, setActive] = useState(0);
+  const [tick, setTick] = useState(0);
 
-export default function LuxuryCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "center",
-    dragFree: false,
-    duration: 20,
-  });
-
-  const tweenFactor = useRef(0);
-  const tweenNodes = useRef<HTMLElement[]>([]);
-
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
-
-  const setTweenNodes = useCallback((emblaApi: EmblaCarouselType) => {
-    tweenNodes.current = emblaApi.slideNodes().map((slideNode) => {
-      return slideNode.querySelector(".embla__slide__inner") as HTMLElement;
-    });
-  }, []);
-
-  const setTweenFactor = useCallback((emblaApi: EmblaCarouselType) => {
-    tweenFactor.current = TWEEN_FACTOR_BASE * emblaApi.scrollSnapList().length;
-  }, []);
-
-  const tweenScale = useCallback((emblaApi: EmblaCarouselType) => {
-    const engine = emblaApi.internalEngine();
-    const scrollProgress = emblaApi.scrollProgress();
-
-    emblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
-      let diffToTarget = scrollSnap - scrollProgress;
-
-      const slidesInSnap = engine.slideRegistry[snapIndex];
-
-      slidesInSnap.forEach((slideIndex) => {
-        if (engine.options.loop) {
-          engine.slideLooper.loopPoints.forEach((loopItem) => {
-            const target = loopItem.target();
-
-            if (slideIndex === loopItem.index && target !== 0) {
-              const sign = Math.sign(target);
-
-              if (sign === -1) {
-                diffToTarget = scrollSnap - (1 + scrollProgress);
-              }
-
-              if (sign === 1) {
-                diffToTarget = scrollSnap + (1 - scrollProgress);
-              }
-            }
-          });
-        }
-
-        const tweenValue = 1 - Math.abs(diffToTarget * tweenFactor.current);
-
-        const scale = numberWithinRange(tweenValue, 0.78, 1);
-        const opacity = numberWithinRange(tweenValue, 0.4, 1);
-
-        const tweenNode = tweenNodes.current[slideIndex];
-
-        tweenNode.style.transform = `scale(${scale})`;
-        tweenNode.style.opacity = `${opacity}`;
-      });
-    });
+  const next = useCallback(() => {
+    setActive((p) => (p + 1) % rooms.length);
+    setTick((t) => t + 1);
   }, []);
 
   useEffect(() => {
-    if (!emblaApi) return;
-
-    setTweenNodes(emblaApi);
-    setTweenFactor(emblaApi);
-    tweenScale(emblaApi);
-
-    emblaApi
-      .on("reInit", setTweenNodes)
-      .on("reInit", setTweenFactor)
-      .on("reInit", tweenScale)
-      .on("scroll", tweenScale)
-      .on("slideFocus", tweenScale);
-  }, [emblaApi, tweenScale, setTweenNodes, setTweenFactor]);
+    const id = setInterval(next, DURATION);
+    return () => clearInterval(id);
+  }, [next]);
 
   return (
-    <section className="w-full overflow-hidden py-20">
-      <div className="mb-14 text-center">
-        <p className="uppercase tracking-[0.3em] text-sm text-orange-400">
-          Luxury Stay
-        </p>
+    <section className="w-full bg-[#f8f8f6] text-[#111] font-sans antialiased py-14 sm:py-16 lg:py-20">
+      <div className="max-w-5xl mx-auto px-5 sm:px-8 lg:px-16">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-8 sm:mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-2xl sm:text-3xl lg:text-[2.25rem] font-medium tracking-tight leading-[1.1] mb-3">
+            Your Stay, Our Service
+          </h2>
+          <p className="text-[#777] text-sm sm:text-[15px] max-w-lg mx-auto leading-[1.6]">
+            We provide everything you need for a smooth and stress-free stay.
+            From easy booking to personalized services, your comfort is our top
+            priority.
+          </p>
+        </motion.div>
 
-        <h2 className="mt-4 text-5xl font-light  md:text-7xl">
-          Our Accommodations
-        </h2>
-      </div>
+        {/* Expanding Gallery */}
+        <motion.div
+          className="flex h-[300px] sm:h-[380px] lg:h-[420px] gap-2 sm:gap-2.5"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          {rooms.map((room, i) => {
+            const isActive = i === active;
 
-      <div className="relative">
-        {/* Embla */}
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
-            {slides.map((slide, index) => (
+            return (
               <div
-                key={index}
-                className="min-w-0 flex-[0_0_70%] px-4 md:flex-[0_0_60%]"
+                key={room.id}
+                onClick={() => {
+                  setActive(i);
+                  setTick((t) => t + 1);
+                }}
+                className={`
+                  relative overflow-hidden rounded-xl sm:rounded-2xl cursor-pointer
+                  transition-[flex] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]
+                  ${isActive ? "flex-[2.5]" : "flex-[1]"}
+                `}
               >
+                {/* Image */}
+                <img
+                  src={room.image}
+                  alt={room.headline}
+                  className={`
+                    absolute inset-0 w-full h-full object-cover
+                    transition-transform duration-700
+                    ${isActive ? "scale-100" : "scale-110"}
+                  `}
+                />
+
+                {/* Overlay */}
                 <div
-                  className="embla__slide__inner relative h-[500px] overflow-hidden rounded-[2.5rem] transition-transform duration-200"
-                  style={{
-                    transformOrigin: "center center",
-                  }}
-                >
-                  {/* Image */}
-                  <img
-                    src={slide.image}
-                    alt={slide.title}
-                    className="h-full w-full object-cover"
-                  />
+                  className={`
+                    absolute inset-0 transition-opacity duration-500
+                    ${isActive ? "bg-black/25" : "bg-black/45"}
+                  `}
+                />
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/30" />
+                {/* Subtle border */}
+                <div className="absolute inset-0 border border-white/10 rounded-xl sm:rounded-2xl pointer-events-none" />
 
-                  {/* Content */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-end px-8 pb-14 text-center text-white">
-                    <span className="mb-4 text-orange-400">Luxury Hotel</span>
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-5 lg:p-6">
+                  {/* Collapsed word */}
+                  <div
+                    className={`
+                      transition-all duration-500
+                      ${isActive ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"}
+                    `}
+                  >
+                    <span className="text-white text-sm sm:text-base font-medium tracking-wide">
+                      {room.word}
+                    </span>
+                  </div>
 
-                    <h3 className="mb-6 text-4xl font-light md:text-6xl">
-                      {slide.title}
+                  {/* Expanded content */}
+                  <div
+                    className={`
+                      transition-all duration-500
+                      ${isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
+                    `}
+                  >
+                    <h3 className="text-white text-lg sm:text-xl lg:text-2xl font-medium leading-snug mb-2">
+                      {room.headline}
                     </h3>
-
-                    <div className="mb-8 h-[2px] w-24 bg-orange-400" />
-
-                    <div className="flex gap-8 text-sm text-white/90">
-                      <span>3 Beds</span>
-                      <span>3 Guests</span>
-                      <span>1 Bathroom</span>
-                    </div>
+                    <p className="text-white/85 text-xs sm:text-sm leading-[1.65] max-w-xs mb-4">
+                      {room.description}
+                    </p>
+                    <div className="w-14 h-[2px] bg-[#b69d74]" />
                   </div>
                 </div>
+
+                {/* Progress bar */}
+                {isActive && (
+                  <div
+                    key={tick}
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/20"
+                  >
+                    <div className="h-full bg-white animate-progress" />
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        </div>
+            );
+          })}
+        </motion.div>
 
-        {/* Left */}
-        <button
-          onClick={scrollPrev}
-          className="absolute left-5 top-1/2 z-20 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md"
+        {/* Bottom CTA */}
+        {/* Bottom CTA */}
+        <motion.div
+          className="mt-10 sm:mt-12 text-center"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <ChevronLeft />
-        </button>
-
-        {/* Right */}
-        <button
-          onClick={scrollNext}
-          className="absolute right-5 top-1/2 z-20 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md"
-        >
-          <ChevronRight />
-        </button>
-
-        {/* Bottom Content */}
-        <div className="mx-auto mt-20 flex max-w-3xl flex-col items-center justify-center px-6 text-center">
-          <p className="text-lg leading-relaxed text-black/70 md:text-xl">
+          <p className="text-[#555] text-sm sm:text-[15px] leading-[1.7] max-w-xl mx-auto mb-6">
             Browse our signature offer for every occasion, from family-friendly
-            packages to romantic gateways. Book directly for our best guarantee
-            plus complimentary service and experience.
+            packages to romantic getaways. Book directly for our best rate
+            guarantee plus complimentary services and experiences.
           </p>
-
-          <Button className="bg-amber-400 text-white mt-10">
+          <button className="inline-flex items-center gap-2 px-6 py-3 bg-[#b69d74] text-white text-sm font-semibold uppercase tracking-wider hover:bg-[#c4ae82] transition-colors duration-300">
             Book an Apartment
-          </Button>
-        </div>
+          </button>
+        </motion.div>
       </div>
     </section>
   );
