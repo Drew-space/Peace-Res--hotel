@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const amenities = [
   {
@@ -64,16 +64,16 @@ const amenities = [
   },
 ];
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
   },
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -81,12 +81,12 @@ const staggerContainer = {
   },
 };
 
-const scaleUp = {
+const scaleUp: Variants = {
   hidden: { opacity: 0, scale: 0.96 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
   },
 };
 
@@ -117,8 +117,8 @@ export default function AmenitiesPage() {
             variants={fadeUp}
             className="text-[#777] text-sm sm:text-[15px] max-w-sm leading-[1.6]"
           >
-            Living well shouldn't feel like work. Here's what comes with the
-            keys.
+            Living well shouldn&lsquo;t feel like work. Here&apos;s what comes
+            with the keys.
           </motion.p>
         </motion.div>
 

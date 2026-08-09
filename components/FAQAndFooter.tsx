@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 const faqs = [
   {
@@ -121,16 +121,16 @@ const GlobeIcon = () => (
 export default function FAQAndFooter() {
   const [openIndex, setOpenIndex] = useState(0);
 
-  const fadeUp = {
+  const fadeUp: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
   };
 
-  const staggerContainer = {
+  const staggerContainer: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -188,7 +188,7 @@ export default function FAQAndFooter() {
                   Still curious?
                 </p>
                 <p className="text-white text-base sm:text-lg font-light">
-                  We're here to help
+                  We&apos;re here to help
                 </p>
               </div>
             </motion.div>
@@ -277,7 +277,7 @@ export default function FAQAndFooter() {
             >
               <div>
                 <h4 className="text-[15px] sm:text-base font-medium mb-0.5">
-                  Can't find your answer?
+                  Can&apos;t find your answer?
                 </h4>
                 <p className="text-[#6b6b6b] text-xs sm:text-sm leading-snug">
                   Our team is happy to assist you with any questions.

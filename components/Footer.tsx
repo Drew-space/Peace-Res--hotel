@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
   },
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -141,8 +141,8 @@ export default function Footer() {
               PEACEREST
             </h2>
             <p className="text-white/50 text-sm leading-[1.7] max-w-xs">
-              We don't just offer rooms. We curate moments of stillness in a
-              world that rarely stops moving.
+              We don&apos;t just offer rooms. We curate moments of stillness in
+              a world that rarely stops moving.
             </p>
             <div className="flex items-center gap-3 pt-1">
               {socials.map((s) => (

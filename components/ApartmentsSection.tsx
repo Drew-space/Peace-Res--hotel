@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-
+import { fadeUp, staggerContainer, scaleUp } from "@/lib/motion";
 const categories = ["All", "Regular", "Suite", "Penthouse", "Villa"];
 
 const apartments = [
